@@ -18,7 +18,7 @@
         }
     </style>
     <script>
-        function pf1() {
+        function pf1() {    //配方表函数
             var k1 = document.getElementById("kind").selectedIndex
             switch (k1) {
                 case 0:
@@ -109,19 +109,21 @@
             }
 
         }
-        function cr() {
+        function cr() {     //配方清空函数
             document.getElementById("peifang").innerHTML = ""
         }
         function ypdjisuan() {		//YPD计算函数
-            var s1, s2 = 0, n1, d1, mb, gly = 0, tpt = 0, yst = 0, agar = 0;
+            var s1, s2 = 0, n1, d1, l1, mb, gly = 0, tpt = 0, yst = 0, agar = 0;
             s1 = document.getElementById("seed").value
             n1 = document.getElementById("normal").value
             d1 = document.getElementById("snormal").value
-            s2 += s1 * 10 + n1 * 50 + d1 * 100		//培养基总量，即加水量
-            gly += s2 / 100		//葡萄糖总需求量
-            tpt += s2 / 100		//蛋白胨总需求量
-            yst += s2 / 200		//酵母粉总需求量
-            mb = n1 / 1 + d1 / 1
+            l1 = document.getElementById("lnormal").value
+            s2 += s1 * 10 + n1 * 50 + d1 * 50 + l1 * 100		//培养基总量，即加水量
+            gly += s2 / 50		//葡萄糖总需求量
+            tpt += s2 / 50		//蛋白胨总需求量
+            yst += s2 / 100		//酵母粉总需求量
+            mb = n1 / 1 + l1 / 1
+            agar = d1 / 1 + l1 / 1
             if (s2 > 0) {		//如果培养基总量不为零，输出计算结果
                 document.getElementById("sign2").innerHTML = "<b>您本次配制需要准备的药品如下：</b>"
                 document.getElementById("sogly").innerHTML = gly + "g 葡萄糖"
@@ -138,17 +140,99 @@
 
             if (n1 > 0) {		//摇瓶培养基个数不为零，输出中瓶量
                 document.getElementById("sign1").innerHTML = "<b>您本次需要准备的器材如下：</b>"
-                document.getElementById("mbottle").innerHTML = "<p>" + mb + "个 250mL中三角瓶</p>"
+                document.getElementById("lbottle").innerHTML = "<p>" + mb + "个 250mL中三角瓶</p>"
             }
-            else { document.getElementById("mbottle").innerHTML = "" }
+            else { document.getElementById("lbottle").innerHTML = "" }
+            if (d1 > 0) {       //  小固体培养基需瓶量
+                document.getElementById("sign1").innerHTML = "<b>您本次需要准备的器材如下：</b>"
+                document.getElementById("mbottle").innerHTML = "<p>" + d1 + "个 100mL三角瓶</p>"
+                document.getElementById("soagar").innerHTML = agar + "份 琼脂粉，每份2g"
+            }
+            else { document.getElementById("soagar").innerHTML = "" }
+            if (l1 > 0) {       //  中固体培养基需瓶量
+                document.getElementById("sign1").innerHTML = "<b>您本次需要准备的器材如下：</b>"
+                document.getElementById("lbottle").innerHTML = "<p>" + mb + "个 250mL中三角瓶</p>"
+                document.getElementById("soagar").innerHTML = agar + "份 琼脂粉，每份2g"
+            }
+            else { document.getElementById("soagar").innerHTML = "" }
+        }
+        function lbjisuan() {
+            var s1, s2 = 0, n1, d1, mb, nac = 0, tpt = 0, yst = 0, agar = 0;
+            s1 = document.getElementById("seed").value
+            n1 = document.getElementById("normal").value
+            d1 = document.getElementById("snormal").value
+            s2 += s1 * 10 + n1 * 50 + d1 * 100		//培养基总量，即加水量
+            nac += s2 / 100		//Nacl总需求量
+            tpt += s2 / 100		//蛋白胨总需求量
+            yst += s2 / 200		//酵母粉总需求量
+            mb = n1 / 1 + d1 / 1
+            if (s2 > 0) {		//如果培养基总量不为零，输出计算结果
+                document.getElementById("sign2").innerHTML = "<b>您本次配制需要准备的药品如下：</b>"
+                document.getElementById("sogly").innerHTML = nac + "g NaCl"
+                document.getElementById("sotpt").innerHTML = tpt + "g 蛋白胨"
+                document.getElementById("soyst").innerHTML = yst + "g 酵母粉"
+                document.getElementById("sowater").innerHTML = s2 + "mL 去离子水"
+            }
+            else { chaofeng() }//培养基总量为0，嘲讽用户
+            if (s1 > 0) {		//种子培养基个数不为零，输出小瓶量
+                document.getElementById("sign1").innerHTML = "<b>您本次配制需要准备的器材如下：</b>"
+                document.getElementById("sbottle").innerHTML = "<p>" + s1 + "个 50mL小三角瓶</p><p>1个 10mL注射器</p>"
+            }
+            else { document.getElementById("sbottle").innerHTML = "" }
+
+            if (n1 > 0) {		//摇瓶培养基个数不为零，输出中瓶量
+                document.getElementById("sign1").innerHTML = "<b>您本次需要准备的器材如下：</b>"
+                document.getElementById("lbottle").innerHTML = "<p>" + mb + "个 250mL中三角瓶</p>"
+            }
+            else { document.getElementById("lbottle").innerHTML = "" }
             if (d1 > 0) {
                 document.getElementById("sign1").innerHTML = "<b>您本次需要准备的器材如下：</b>"
-                document.getElementById("mbottle").innerHTML = "<p>" + mb + "个 250mL中三角瓶</p>"
+                document.getElementById("lbottle").innerHTML = "<p>" + mb + "个 250mL中三角瓶</p>"
                 document.getElementById("soagar").innerHTML = d1 + "份 琼脂粉，每份2g"
             }
             else { document.getElementById("soagar").innerHTML = "" }
         }
-        function cle() {  //重置清屏函数
+        function mmjisuan() {
+            var s1, s2 = 0, n1, d1, mb, nac = 0, tpt = 0, yst = 0, agar = 0;
+            // s1 = document.getElementById("seed").value
+            // n1 = document.getElementById("normal").value
+            d1 = document.getElementById("snormal").value
+            s2 += s1 * 10 + n1 * 50 + d1 * 100		//培养基总量，即加水量
+            nac += s2 / 100		//Nacl总需求量
+            tpt += s2 / 100		//蛋白胨总需求量
+            yst += s2 / 200		//酵母粉总需求量
+            mb = n1 / 1 + d1 / 1
+            if (s2 > 0) {		//如果培养基总量不为零，输出计算结果
+                document.getElementById("sign2").innerHTML = "<b>您本次配制需要准备的药品如下：</b>"
+                document.getElementById("sogly").innerHTML = nac + "g NaCl"
+                document.getElementById("sotpt").innerHTML = tpt + "g 蛋白胨"
+                document.getElementById("soyst").innerHTML = yst + "g 酵母粉"
+                document.getElementById("sowater").innerHTML = s2 + "mL 去离子水"
+            }
+            else { chaofeng() }//培养基总量为0，嘲讽用户
+            if (s1 > 0) {		//种子培养基个数不为零，输出小瓶量
+                document.getElementById("sign1").innerHTML = "<b>您本次配制需要准备的器材如下：</b>"
+                document.getElementById("sbottle").innerHTML = "<p>" + s1 + "个 50mL小三角瓶</p><p>1个 10mL注射器</p>"
+            }
+            else { document.getElementById("sbottle").innerHTML = "" }
+
+            if (n1 > 0) {		//摇瓶培养基个数不为零，输出中瓶量
+                document.getElementById("sign1").innerHTML = "<b>您本次需要准备的器材如下：</b>"
+                document.getElementById("lbottle").innerHTML = "<p>" + mb + "个 250mL中三角瓶</p>"
+            }
+            else { document.getElementById("lbottle").innerHTML = "" }
+            if (d1 > 0) {
+                document.getElementById("sign1").innerHTML = "<b>您本次需要准备的器材如下：</b>"
+                document.getElementById("lbottle").innerHTML = "<p>" + mb + "个 250mL中三角瓶</p>"
+                document.getElementById("soagar").innerHTML = d1 + "份 琼脂粉，每份2g"
+            }
+            else { document.getElementById("soagar").innerHTML = "" }
+        }
+
+        function fjjisuan() {
+
+        }
+        function cle() {  //汇总案清空函数
             document.getElementById("sign2").innerHTML = ""
             document.getElementById("sogly").innerHTML = ""
             document.getElementById("sotpt").innerHTML = ""
@@ -157,12 +241,14 @@
             document.getElementById("sign1").innerHTML = ""
             document.getElementById("sbottle").innerHTML = ""
             document.getElementById("mbottle").innerHTML = ""
+            document.getElementById("lbottle").innerHTML = ""
             document.getElementById("seed").value = ""
             document.getElementById("normal").value = ""
             document.getElementById("snormal").value = ""
+            document.getElementById("lnormal").value = ""
             document.getElementById("soagar").innerHTML = ""
         }
-        function panding() {       //判断培养基种类
+        function panding() {       //种类判定or计算分选函数
             var k1 = document.getElementById("kind").selectedIndex
             switch (k1) {
                 case 0:
@@ -171,9 +257,18 @@
                 case 1:
                     ypdjisuan()
                     break
+                case 2:
+                    lbjisuan()
+                    break
+                case 3:
+                    mmjisuan()
+                    break
+                case 4:
+                    fjjisuan()
+                    break
             }
         }
-        function chaofeng() {
+        function chaofeng() {       //嘲讽函数
             document.getElementById("sign1").innerHTML = "<h2>您配培养基吗？</h2><h1>您不配！</h1>"
             document.getElementById("sign2").innerHTML = ""
             document.getElementById("sogly").innerHTML = ""
@@ -182,9 +277,11 @@
             document.getElementById("sowater").innerHTML = ""
             document.getElementById("sbottle").innerHTML = ""
             document.getElementById("mbottle").innerHTML = ""
+            document.getElementById("lbottle").innerHTML = ""
             document.getElementById("seed").value = ""
             document.getElementById("normal").value = ""
             document.getElementById("snormal").value = ""
+            document.getElementById("lnormal").value = ""
             document.getElementById("soagar").innerHTML = ""
         }
     </script>
@@ -193,21 +290,29 @@
 <body>
     <br><br>
     <h1>培养基配制助手</h1>
-    <!-- <h3>请选择待配培养基的种类：</h3> -->
     <p><b>培养基种类：</b><select id="kind" onchange="pf1()+cle()">
             <option>请选择培养基种类</option>
             <option>YPD培养基</option>
-            <option>LB培养基</option>
+            <!-- <option>LB培养基</option>
             <option>MM培养基</option>
-            <option>Candida glycerinogenes发酵培养基</option>
+            <option>Candida glycerinogenes发酵培养基</option> -->
         </select></p>
     <p id="peifang"></p>
     <h3>请输入待配培养基的数量:</h3>
-    <p>种子培养基 <input type="number" id="seed" min="0">个</p>
+    <p><b>种子培养基</b> <input type="number" id="seed" min="0">个</p>
     <small>YPD种子培养基是在50ml小三角瓶中加入10mL YPD培养基</small>
-    <p>摇瓶培养基 <input type="number" id="normal" min="0">个</p>
+    <p><b>摇瓶培养基</b> <input type="number" id="normal" min="0">个</p>
     <small>YPD摇瓶培养基是在250mL中三角瓶中加入50mL YPD培养基</small>
-    <p>固体培养基 <input type="number" id="snormal" min="0">个</p>
+    <p><b>50mL固体培养基</b>
+        <!-- </p>
+    <p> -->
+        <!-- <select id="soildselect">
+            <option>请选择瓶容量</option>
+            <option>100mL三角瓶</option>
+            <option>250mL三角瓶</option>
+        </select>  -->
+        <input type="number" id="snormal" min="0">个</p>
+    <p><b>100mL固体培养基</b> <input type="number" id="lnormal" min="0">个</p>
     <small>YPD固体培养基是在250mL中三角瓶中加入100mL含2%琼脂的YPD培养基</small>
     <p><button type="button" onclick="panding()" accesskey="enter">开始计算</button> &nbsp;
         <button type="reset" onclick="cle()">重置</button>
@@ -215,6 +320,7 @@
     <p id="sign1"></p>
     <p id="sbottle"></p>
     <p id="mbottle"></p>
+    <p id="lbottle"></p>
     <p id="sign2"></p>
     <p id="sogly"></p>
     <p id="sotpt"></p>
