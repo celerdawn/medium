@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            text-align: center;
+            padding: 7px;
+            ;
+        }
+    </style>
+    <script>
+        var nc = 0
+        var ypd = [
+            "YPD培养基",
+            "YPD种子培养基",
+            "液体",
+            "10mL"
+        ];
+        function sel() {
+            var ki = document.getElementById("kind").selectedIndex
+            switch (ki) {
+                case 0:
+                    document.getElementById("sele").innerHTML = "\
+                    <option>请选择培养基类型</option>"
+                    break
+                case 1:
+                    document.getElementById("sele").innerHTML = "\
+                    <option>请选择培养基类型</option>\
+                        <option>YPD种子培养基(10mL)</option >\
+                        <option>YPD摇瓶培养基(50mL)</option>\
+                        <option>YPD固体培养基(50mL)</option>\
+                        <option>YPD固体培养基(100mL)</option>"
+                    break
+            }
+        }
+        function sub() {
+            // var a = document.getElementById("kind")[document.getElementById("kind").selectedIndex].text
+            // var b = document.getElementById("sele")[document.getElementById("sele").selectedIndex].text
+            if (document.getElementById("num").value <= 0 | document.getElementById("num").value == "") {
+                alert("请输入正确的配制数量，值应为大于0的整数！")
+            }
+            else {
+                var a = ypd[0]
+                var b = ypd[1]
+                var c = ypd[2]
+                var d = ypd[3]
+                nc += 1
+                var onesub = "<tr>\
+                <th>"+ a + "</th>\
+                <th>"+ b + "</th>\
+                <th>"+ c + "</th>\
+                <th>"+ d + "</th>\
+                <th>"+ document.getElementById("num").value + "</th>\
+                <th><input type=checkbox id=&#34&#34+nc></th>\
+             </tr>"
+                document.getElementById("subtable").innerHTML = document.getElementById("subtable").innerHTML + onesub
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>培养基配制助手2.0</h1>
+    <p>
+        <select id="kind" onchange="sel()">
+            <option>请选择培养基名称</option>
+            <option>YPD培养基</option>
+            <option>LB培养基</option>
+            <option>MM培养基</option>
+            <option>Candida glycerinogenes发酵培养基</option>
+        </select>
+    </p>
+    <p>
+        <select id="sele">
+            <option>请选择培养基类型</option>
+        </select>
+        <input type="number" id="num" min="0">
+        <button type="button" onclick="sub()">提交</button>
+    </p>
+    <table border=&#341&#34 id="subtable">
+        <caption><b>待计算培养基</b></caption>
+        <tr>
+            <th>培养基名称</th>
+            <th>培养基类型</th>
+            <th>培养基物态</th>
+            <th>单个体积</th>
+            <th>配制数量</th>
+            <th>&nbsp;<button type="button" onclick="del()">删除</button>&nbsp;</th>
+        </tr>
+    </table>
+</body>
+
+</html>
