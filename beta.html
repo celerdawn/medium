@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>培养基配制助手Beta</title>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            text-align: center;
+            padding: 7px;
+            ;
+        }
+    </style>
+    <script>
+        var ypd = []
+        ypd[1] = ["YPD", "种子培养基", "液体", "10"];
+        ypd[2] = ["YPD", "摇瓶培养基", "液体", "50"];
+        ypd[3] = ["YPD", "点板培养基", "固体", "50"];
+        ypd[4] = ["YPD", "固体培养基", "固体", "100"];
+        var lb = []
+        lb[1] = ["LB", "种子培养基", "液体", "10"];
+        lb[2] = ["LB", "摇瓶培养基", "液体", "50"];
+        lb[3] = ["LB", "点板培养基", "固体", "50"];
+        lb[4] = ["LB", "固体培养基", "固体", "100"];
+        var mm = []
+        mm[1] = ["MM", "摇瓶培养基", "液体", "50"];
+        mm[2] = ["MM", "点板培养基", "固体", "50"];
+        mm[3] = ["MM", "固体培养基", "固体", "100"];
+        var fm = []
+        fm[1] = ["发酵", "摇瓶培养基", "液体", "30"];
+        var medall = ["", ypd, lb, mm, fm]
+        var med = [], ypdadd = [], lbadd = [], mmadd = [], fmadd = [], methc = [], methq = [], methcy = [], methcl = [], methcm = [], methcf = [];
+        function sel() {    //培养基类型函数
+            document.getElementById("sele").selectedIndex = 0
+            able()
+            var ki = document.getElementById("kind").selectedIndex
+            switch (ki) {
+                case 0:
+                    document.getElementById("sele").innerHTML = "\
+                    <option>请选择培养基类型</option>"
+                    break
+                case 1:
+                    document.getElementById("sele").innerHTML = "\
+                    <option>请选择培养基类型</option>\
+                        <option>种子培养基(10mL)</option >\
+                        <option>摇瓶培养基(50mL)</option>\
+                        <option>点板培养基(50mL)</option>\
+                        <option>固体培养基(100mL)</option>"
+                    break
+                case 2:
+                    document.getElementById("sele").innerHTML = "\
+                    <option>请选择培养基类型</option>\
+                        <option>种子培养基(10mL)</option >\
+                        <option>摇瓶培养基(50mL)</option>\
+                        <option>点板培养基(50mL)</option>\
+                        <option>固体培养基(100mL)</option>"
+                    break
+                case 3:
+                    document.getElementById("sele").innerHTML = "\
+                    <option>请选择培养基类型</option>\
+                        <option>摇瓶培养基(50mL)</option>\
+                        <option>点板培养基(50mL)</option>\
+                        <option>固体培养基(100mL)</option>"
+                    break
+                case 4:
+                    document.getElementById("sele").innerHTML = "\
+                    <option>请选择培养基类型</option>\
+                        <option>固体培养基(30mL)</option>"
+                    break
+            }
+        }
+        function able() {
+            if (document.getElementById("kind").selectedIndex == 0 |
+                document.getElementById("sele").selectedIndex == 0 |
+                document.getElementById("num").selectedIndex == 0) {
+                document.getElementById("submit").disabled = "disable"
+            }
+            else { document.getElementById("submit").removeAttribute("disabled") }
+            if (med.length == 0) {
+                document.getElementById("begin").disabled = "disable"
+            }
+            else { document.getElementById("begin").removeAttribute("disabled") }
+        }
+        function sub() {    //培养基提交函数
+            var medl = [],
+                dig = document.getElementById("num").value,
+                nc = med.length
+            i = document.getElementById("kind").selectedIndex
+            j = document.getElementById("sele").selectedIndex
+            medl[0] = medall[i][j][0]
+            medl[1] = medall[i][j][1]
+            medl[2] = medall[i][j][2]
+            medl[3] = medall[i][j][3]
+            medl[4] = dig
+            med[nc] = medl
+            print()
+            able()
+
+        }
+        function print() {
+            document.getElementById("subtable").innerHTML = "\
+                <caption><b>待计算培养基</b></caption>\
+                    <tr>\
+                    <th>名称</th>\
+                    <th>类型</th>\
+                    <th>物态</th>\
+                    <th>单体积/mL</th>\
+                    <th>数量/瓶</th>\
+                    <th>&nbsp;<button type='button' onclick='del()'>删除</button>&nbsp;</th></tr>"
+            var onesub = ""
+            for (var i = 0; i < med.length; i++) {
+                var medc = []
+                medc = med[i]
+                for (var k = 0; k < medc.length; k++) {
+                    onesub += "<th>" + medc[k] + "</th>"
+                }
+                onesub += "\
+                <th><input type=checkbox name='cbx'></th>\
+             </tr>"
+            }
+            document.getElementById("subtable").innerHTML = document.getElementById("subtable").innerHTML + onesub
+        }
+        function del() {
+            var de1 = document.getElementsByName("cbx")
+            for (var i = de1.length - 1; i > -1; i--) { if (de1[i].checked == true) { med.splice(i, 1) } }
+            print()
+        }
+        function cle() {  //汇总案清空函数
+            document.getElementById("sign2").innerHTML = ""
+            document.getElementById("solu1").innerHTML = ""
+            document.getElementById("solu2").innerHTML = ""
+            document.getElementById("solu3").innerHTML = ""
+            document.getElementById("solu4").innerHTML = ""
+            document.getElementById("solu5").innerHTML = ""
+            document.getElementById("solu6").innerHTML = ""
+            document.getElementById("sign1").innerHTML = ""
+            document.getElementById("sbottle").innerHTML = ""
+            document.getElementById("mbottle").innerHTML = ""
+            document.getElementById("lbottle").innerHTML = ""
+            med = []
+            document.getElementById("begin").removeAttribute("disabled")
+            print()
+        }
+        function chaofeng() {       //嘲讽函数
+            document.getElementById("sign1").innerHTML = "<h2>您配培养基吗？</h2><h1>您不配！</h1>"
+            document.getElementById("sign2").innerHTML = ""
+            document.getElementById("sbottle").innerHTML = ""
+            document.getElementById("mbottle").innerHTML = ""
+            document.getElementById("lbottle").innerHTML = ""
+            document.getElementById("solu1").innerHTML = ""
+            document.getElementById("solu2").innerHTML = ""
+            document.getElementById("solu3").innerHTML = ""
+            document.getElementById("solu4").innerHTML = ""
+            document.getElementById("solu5").innerHTML = ""
+            document.getElementById("solu6").innerHTML = ""
+
+            able()
+        }
+        function devide() {
+            ypdadd = []; lbadd = []; mmadd = []; fmadd = []; methcy = [0, 0, 0, 0, 0, 0, 0]; methcl = [0, 0, 0, 0, 0, 0, 0]; methcm = [0, 0, 0, 0, 0, 0], methcf = [0, 0, 0, 0, 0, 0], methq = [0, 0, 0, 0, 0]
+            for (var i = 0; i < med.length; i++) {
+                switch (med[i][0]) {
+                    case "YPD":
+                        ypdadd[ypdadd.length] = med[i]
+                        break
+                    case "LB":
+                        lbadd[lbadd.length] = med[i]
+                        break
+                    case "MM":
+                        mmadd[mmadd.length] = med[i]
+                        break
+                    case "发酵":
+                        fmadd[fmadd.length] = med[i]
+                        break
+                }
+            }
+            ypdjisuan()
+            lbjisuan()
+            mmjisuan()
+            fmjisuan()
+            printmeth()
+        }
+        function ypdjisuan() {
+            var s1 = 0, s2 = 0, n1 = 0, d1 = 0, l1 = 0, mb = 0, gly = 0, tpt = 0, yst = 0, agar = 0;
+            for (var i = 0; i < ypdadd.length; i++) {
+                switch (ypdadd[i][1]) {
+                    case "种子培养基":
+                        s1 += ypdadd[i][4] / 1
+                        break
+                    case "摇瓶培养基":
+                        n1 += ypdadd[i][4] / 1
+                        break
+                    case "点板培养基":
+                        d1 += ypdadd[i][4] / 1
+                        break
+                    case "固体培养基":
+                        l1 += ypdadd[i][4] / 1
+                        break
+                }
+            }
+            s2 = s1 * 10 + n1 * 50 + d1 * 50 + l1 * 100
+            gly = s2 / 50		//葡萄糖总需求量
+            tpt = s2 / 50		//蛋白胨总需求量
+            yst = s2 / 100		//酵母粉总需求量
+            mb = n1 / 1 + l1 / 1
+            agar = d1 / 1 + l1 / 1
+            methcy[0] += s2
+            methcy[1] += gly
+            methcy[2] += tpt
+            methcy[3] += yst
+            methcy[4] += agar
+            methcy[5] += d1
+            methcy[6] += l1
+            methc[0] = methcy
+            methq[0] += s1
+            methq[1] += mb
+            methq[2] += d1
+            methq[3] += l1
+            methq[4] += n1
+        }
+        function lbjisuan() {
+            var s1 = 0, s2 = 0, n1 = 0, d1 = 0, l1 = 0, mb = 0, nacl = 0, tpt = 0, yst = 0, agar = 0;
+            for (var i = 0; i < lbadd.length; i++) {
+                switch (lbadd[i][1]) {
+                    case "种子培养基":
+                        s1 += lbadd[i][4] / 1
+                        break
+                    case "摇瓶培养基":
+                        n1 += lbadd[i][4] / 1
+                        break
+                    case "点板培养基":
+                        d1 += lbadd[i][4] / 1
+                        break
+                    case "固体培养基":
+                        l1 += lbadd[i][4] / 1
+                        break
+                }
+            }
+            s2 = s1 * 10 + n1 * 50 + d1 * 50 + l1 * 100
+            nacl = s2 / 100		//NaCl总需求量
+            tpt = s2 / 100  	//蛋白胨总需求量
+            yst = s2 / 200		//酵母粉总需求量
+            mb = n1 / 1 + l1 / 1
+            agar = d1 / 1 + l1 / 1
+            methcl[0] += s2
+            methcl[1] += nacl
+            methcl[2] += tpt
+            methcl[3] += yst
+            methcl[4] += agar
+            methcl[5] += d1
+            methcl[6] += l1
+            methc[1] = methcl
+            methq[0] += s1
+            methq[1] += mb
+            methq[2] += d1
+            methq[3] += l1
+            methq[4] += n1
+        }
+        function mmjisuan() {
+            var s2 = 0, n1 = 0, d1 = 0, l1 = 0, mb = 0, gly = 0, ynb = 0, agar = 0;
+            for (var i = 0; i < mmadd.length; i++) {
+                switch (mmadd[i][1]) {
+                    case "摇瓶培养基":
+                        n1 += mmadd[i][4] / 1
+                        break
+                    case "点板培养基":
+                        d1 += mmadd[i][4] / 1
+                        break
+                    case "固体培养基":
+                        l1 += mmadd[i][4] / 1
+                        break
+                }
+            }
+            s2 = n1 * 50 + d1 * 50 + l1 * 100
+            gly = s2 / 50		//葡萄糖总需求量
+            ynb = s2 * 0.0067  	//YNB总需求量
+            mb = n1 / 1 + l1 / 1
+            agar = d1 / 1 + l1 / 1
+            methcm[0] += s2
+            methcm[1] += gly
+            methcm[2] += ynb
+            methcm[3] += agar
+            methcm[4] += d1
+            methcm[5] += l1
+            methc[2] = methcm
+            methq[1] += mb
+            methq[2] += d1
+            methq[3] += l1
+            methq[4] += n1
+        }
+        function fmjisuan() {
+            var s2 = 0, n1 = 0, gly = 0, ynb = 0, phe = 0, mgs = 0, kpo = 0;
+            for (var i = 0; i < fmadd.length; i++) {
+                n1 = fmadd[i][4] / 1
+                // switch (lbadd[i][1]) {
+                //     case "摇瓶培养基":
+                //         n1 += lbadd[i][4] / 1
+                //         break
+                //     case "点板培养基":
+                //         d1 += lbadd[i][4] / 1
+                //         break
+                //     case "固体培养基":
+                //         l1 += lbadd[i][4] / 1
+                //         break
+                // }
+            }
+            s2 = n1 * 30
+            gly = s2 * 0.09		//葡萄糖总需求量
+            ynb = s2 * 0.0074  	//YNB总需求量
+            phe = s2 * 0.007    //L-苯丙氨酸总需求量
+            mgs = s2 * 0.0005   //MgSO4总需求量
+            kpo = s2 * 0.005    //KH2PO4总需求量
+            methcf[0] += s2
+            methcf[1] += gly
+            methcf[2] += ynb
+            methcf[3] += phe
+            methcf[4] += mgs
+            methcf[5] += kpo
+            methc[3] = methcf
+            methq[1] += n1
+            methq[4] += n1
+        }
+        function printmeth() {
+            var printq = [], sw = 0
+            for (i = 0; i < methq.length; i++) {
+                sw += methq[i]
+                printq[i] = [i, methq[i]]
+            }
+            var printc = []
+            for (l = 0; l < methc.length; l++) { printc[l] = [l, methc[l]] }
+            if (sw > 0) {
+                for (j = printq.length - 1; j > -1; j--) { if (printq[j][1] == 0) { printq.splice(j, 1) } }
+                document.getElementById("sign1").innerHTML = "<b>您本次配制需要准备的器材如下：</b>"
+                for (k = 0; k < printq.length; k++) {
+                    switch (printq[k][0]) {
+                        case 0:
+                            document.getElementById("sbottle").innerHTML = "<p>" + printq[k][1] + "个 50mL小三角瓶</p><p>1个 10mL注射器</p>"
+                            break
+                        case 1:
+                            document.getElementById("lbottle").innerHTML = "<p>" + printq[k][1] + "个 250mL中三角瓶</p>"
+                            break
+                        case 2:
+                            document.getElementById("mbottle").innerHTML = "<p>" + printq[k][1] + "个 100mL三角瓶</p><p>" + printq[k][1] * 2 + "个 玻璃平板培养皿</p>"
+                            break
+                    }
+                }
+
+                for (m = printc.length - 1; m > -1; m--) { if (printc[m][1][0] == 0) { printc.splice(m, 1) } }
+                document.getElementById("sign2").innerHTML = "<b>您本次配制需要准备的药品如下：</b>"
+                for (n = 0; n < printc.length; n++) {
+                    switch (printc[n][0]) {
+                        case 0:
+                            document.getElementById("solu1").innerHTML = "\
+                        <p>【YPD培养基】</p><p>"+ printc[n][1][1] + "g 葡萄糖</p>\
+                        <p>"+ printc[n][1][2] + "g 蛋白胨</p>\
+                        <p>"+ printc[n][1][3] + "g 酵母粉</p>\
+                        <p>"+ printc[n][1][0] + "mL 去离子水</p>"
+                            if (printc[n][1][5] * printc[n][1][6] != 0) { document.getElementById("solu1").innerHTML = document.getElementById("solu1").innerHTML + "<p>" + printc[n][1][4] + "份 琼脂粉，其中1g " + printc[n][1][5] + "份，2g " + printc[n][1][6] + "份" }
+                            else {
+                                if (printc[n][1][5] + printc[n][1][6] != 0) {
+                                    switch (printc[n][1][5]) {
+                                        case 0:
+                                            document.getElementById("solu1").innerHTML = document.getElementById("solu1").innerHTML + "<p>" + printc[n][1][6] + "份 2g琼脂粉 "
+                                            break
+                                        default:
+                                            document.getElementById("solu1").innerHTML = document.getElementById("solu1").innerHTML + "<p>" + printc[n][1][5] + "份 1g琼脂粉 "
+                                            break
+                                    }
+                                }
+                            }
+                            break
+                        case 1:
+                            document.getElementById("solu2").innerHTML = "\
+                        <p>【LB培养基】</p><p>"+ printc[n][1][1] + "g NaCl</p>\
+                        <p>"+ printc[n][1][2] + "g 蛋白胨</p>\
+                        <p>"+ printc[n][1][3] + "g 酵母粉</p>\
+                        <p>"+ printc[n][1][0] + "mL 去离子水</p>"
+                            if (printc[n][1][5] * printc[n][1][6] != 0) { document.getElementById("solu2").innerHTML = document.getElementById("solu2").innerHTML + "<p>" + printc[n][1][4] + "份 琼脂粉，其中1g " + printc[n][1][5] + "份，2g " + printc[n][1][6] + "份" }
+                            else {
+                                if (printc[n][1][5] + printc[n][1][6] != 0) {
+                                    switch (printc[n][1][5]) {
+                                        case 0:
+                                            document.getElementById("solu2").innerHTML = document.getElementById("solu2").innerHTML + "<p>" + printc[n][1][6] + "份 2g琼脂粉 "
+                                            break
+                                        default:
+                                            document.getElementById("solu2").innerHTML = document.getElementById("solu2").innerHTML + "<p>" + printc[n][1][5] + "份 1g琼脂粉 "
+                                            break
+                                    }
+                                }
+                            }
+                            break
+                        case 2:
+                            document.getElementById("solu3").innerHTML = "\
+                        <p>【MM培养基】</p><p>"+ printc[n][1][1] + "g 葡萄糖</p>\
+                        <p>"+ printc[n][1][2] + "g YNB</p>\
+                        <p>"+ printc[n][1][0] + "mL 去离子水</p>"
+                            if (printc[n][1][4] * printc[n][1][5] != 0) { document.getElementById("solu3").innerHTML = document.getElementById("solu3").innerHTML + "<p>" + printc[n][1][4] + "份 琼脂粉，其中1g " + printc[n][1][4] + "份，2g " + printc[n][1][5] + "份" }
+                            else {
+                                if (printc[n][1][4] + printc[n][1][5] != 0) {
+                                    switch (printc[n][1][4]) {
+                                        case 0:
+                                            document.getElementById("solu3").innerHTML = document.getElementById("solu3").innerHTML + "<p>" + printc[n][1][5] + "份 2g琼脂粉 "
+                                            break
+                                        default:
+                                            document.getElementById("solu3").innerHTML = document.getElementById("solu3").innerHTML + "<p>" + printc[n][1][4] + "份 1g琼脂粉 "
+                                            break
+                                    }
+                                }
+                            }
+                            break
+                        case 3:
+                            document.getElementById("solu4").innerHTML = "\
+                        <p>【Candida glycerinogenes发酵培养基】</p><p>"+ printc[n][1][1].toFixed(2) + "g 葡萄糖</p>\
+                        <p>"+ printc[n][1][2].toFixed(4) + "g YNB</p>\
+                        <p>"+ printc[n][1][3].toFixed(4) + "g L-苯丙氨酸</p>\
+                        <p>"+ printc[n][1][4].toFixed(4) + "g MgSO<sub>4</sub>·7H<sub>2</sub>O</p>\
+                        <p>"+ printc[n][1][5].toFixed(4) + "g KH<sub>2</sub>PO<sub>4</sub></p>\
+                        <p>"+ printc[n][1][0] + "mL 去离子水</p>"
+                            break
+                    }
+                }
+            }
+            else { chaofeng() }
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>培养基配制助手Beta</h1>
+    <p>
+        <select id="kind" onchange="sel()">
+            <option>请选择培养基名称</option>
+            <option>YPD培养基</option>
+            <option>LB培养基</option>
+            <option>MM培养基</option>
+            <option>Candida glycerinogenes发酵培养基</option>
+        </select>
+    </p>
+    <p>
+        <select id="sele" onchange="able()">
+            <option>请选择培养基类型</option>
+        </select>
+    </p>
+    <p>
+        <select id="num" onchange="able()">
+            <option>请选择培养基数量</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option>18</option>
+            <option>19</option>
+            <option>20</option>
+            <option>21</option>
+            <option>22</option>
+            <option>23</option>
+            <option>24</option>
+            <option>25</option>
+            <option>26</option>
+            <option>27</option>
+            <option>28</option>
+            <option>29</option>
+            <option>30</option>
+        </select>
+        <button type="button" onclick="sub()" id="submit" disabled="">提交</button>
+    </p>
+    <table border='1' id="subtable">
+        <caption><b>待计算培养基</b></caption>
+        <tr>
+            <th>名称</th>
+            <th>类型</th>
+            <th>物态</th>
+            <th>单体积/mL</th>
+            <th>数量/瓶</th>
+            <th>&nbsp;<button type="button" onclick="del()">删除</button>&nbsp;</th>
+        </tr>
+    </table>
+    <p><button type="button" onclick="devide()" id="begin">开始计算</button>
+        <button type="reset" onclick="cle()">重置</button></p>
+    <p id="sign1"></p>
+    <p id="sbottle"></p>
+    <p id="mbottle"></p>
+    <p id="lbottle"></p>
+    <p id="sign2"></p>
+    <p id="solu1"></p>
+    <p id="solu2"></p>
+    <p id="solu3"></p>
+    <p id="solu4"></p>
+    <p id="solu5"></p>
+    <p id="solu6"></p>
+    <p id="step"></p>
+</body>
+
+</html>
